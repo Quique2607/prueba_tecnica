@@ -1,13 +1,19 @@
-import { useState } from 'react'
-import './App.css'
+import { useState } from "react";
+import "./App.css";
+import SignIn from "./modules/signin/SignIn";
 
 function App() {
-
   return (
     <>
-      <h1 className='text-red-400'>hola mundo</h1>
+      {/* <div className='w-full bg-red-400'>
+        <Input size="large" placeholder="large size" prefix={<UserOutlined />} />
+      </div> */}
+
+      
+
+      <SignIn/>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
