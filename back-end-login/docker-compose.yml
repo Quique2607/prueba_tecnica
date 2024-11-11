@@ -1,0 +1,4 @@
+version: 'version'
+services:
+ database:
+  image: mysql:9.1.0
