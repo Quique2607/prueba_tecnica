@@ -1,12 +1,13 @@
 import express from "express";
 import cors from "cors";
-
+import cookieParser from "cookie-parser";
 import userRoutes from "./routes/usuario_routes.js";
 import authRoutes from "./routes/auth_routes.js";
 
 const app = express();
 
 app.use(express.json());
+app.use(cookieParser());
 
 const allowedOrigins = ['http://localhost:3000', 'http://localhost:5173'];
 

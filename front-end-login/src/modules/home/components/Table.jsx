@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Form, Input, InputNumber, Popconfirm, Table, Typography } from "antd";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
 const EditableCell = ({
   editing,
@@ -57,8 +58,8 @@ const TableComponent = () => {
         setData(newData);
         setEditingKey("");
 
-        const updateUser = {...item,...row};
-        await editUser(updateUser)
+        const updateUser = { ...item, ...row };
+        await editUser(updateUser);
       } else {
         newData.push(row);
         setData(newData);
@@ -94,22 +95,30 @@ const TableComponent = () => {
     }
   };
 
-  const deleteUser = async (deleteUser) => {
+  const deleteUser = async (id) => {
     try {
-      const res = await fetch(`http://localhost/api/usuario/delete/${deleteUser.key}`,{
-        method: "DELETE"
-      })
+      const res = await fetch(
+        `http://localhost:3000/api/usuario/delete/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       if (res.ok) {
         const data = await res.json();
         alert("Usuario Eliminado: " + data.message);
+
+        const newData = data.filter((item) => item.key !== id);
+        setData(newData)
       } else {
         const error = await res.json();
         alert("Error al eliminar: " + error.message);
+
       }
-    } catch (error) {
-      
-    }
-  }
+    } catch (error) {}
+  };
 
   const columns = [
     {
@@ -163,12 +172,23 @@ const TableComponent = () => {
             </Popconfirm>
           </span>
         ) : (
-          <Typography.Link
-            disabled={editingKey !== ""}
-            onClick={() => edit(record)}
-          >
-            Editar
-          </Typography.Link>
+          <span>
+            <Typography.Link
+              disabled={editingKey !== ""}
+              onClick={() => edit(record)}
+            >
+              <EditOutlined />
+            </Typography.Link>
+
+            <Popconfirm
+              title="¿Seguro que quieres eliminar este usuario?"
+              onConfirm={() => deleteUser(record.key)}
+            >
+              <Typography.Link style={{ marginLeft: 8 }}>
+                <DeleteOutlined />
+              </Typography.Link>
+            </Popconfirm>
+          </span>
         );
       },
     },

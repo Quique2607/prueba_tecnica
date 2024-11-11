@@ -5,6 +5,7 @@ import login from "/login.png";
 import { Controller, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import {useNavigate} from "react-router";
+import { useAuth } from "../../context/AuthContext";
 
 const SignIn = () => {
   const {
@@ -12,6 +13,8 @@ const SignIn = () => {
     control,
     formState: { errors },
   } = useForm();
+
+  const { setIsAuthenticated } = useAuth();
 
   const navigate = useNavigate()
 
@@ -29,9 +32,8 @@ const SignIn = () => {
       const result = await res.json();
 
       if(res.ok && result.success){
-        setTimeout(()=>{
-            navigate("/")
-        },1000)
+         setIsAuthenticated(true);
+         navigate("/")
       }else{
         alert(result.error || "Error al iniciar sesión");
       }
@@ -40,8 +42,6 @@ const SignIn = () => {
       alert("Hubo un problema al iniciar sesión");
     }
   };
-
-  console.log(errors);
   return (
     <>
       <div className="h-[100vh] flex items-center justify-center">

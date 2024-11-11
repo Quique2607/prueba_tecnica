@@ -2,7 +2,7 @@ import { UserOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
 import { Button, Input, message } from "antd";
 import { useForm, Controller } from "react-hook-form";
 import register from "/register.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const {
@@ -10,6 +10,8 @@ const SignUp = () => {
     control,
     formState: { errors },
   } = useForm();
+
+  const navigate = useNavigate()
 
   const onSubmit = async (data) => {
     try {
@@ -27,6 +29,7 @@ const SignUp = () => {
         alert(result.error);
       } else {
         alert(result.message);
+        navigate("/signIn")
       }
     } catch (error) {
       console.log(error.message);

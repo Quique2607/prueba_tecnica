@@ -97,9 +97,9 @@ export const login = async (req, res) => {
     );
 
     res.cookie("authToken",jwtToken,{
-        httpOnly: true,
-        sameSite: "strict",
-        maxAge: 3600000
+      httpOnly: true,
+      sameSite: "strict",
+      maxAge: 3600000
     })
 
     return res.status(200).json({
@@ -113,20 +113,35 @@ export const login = async (req, res) => {
   }
 };
 
-export const logout = async (req,res) =>{
+export const logout = async (req, res) => {
   try {
-    res.clearCookie("authToken",{
-        httpOnly: true,
-        sameSite: "strict"
-    })
+    res.clearCookie("authToken", {
+      httpOnly: true,
+      sameSite: "strict",
+    });
 
     return res.status(200).json({
-        message: "Cierre de session exitoso"
-    })
+      message: "Cierre de session exitoso",
+    });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return res.status(500).json({
-        error: "Error al cerrar la session"
-    })
+      error: "Error al cerrar la session",
+    });
   }
-}
+};
+
+export const validateToken = async (req, res) => {
+  const token = req.cookies.authToken;
+
+  if (!token) {
+    return res.json({ authenticated: false });
+  }
+
+  try {
+    const verified = jwt.verify(token, process.env.SECRET_KEY);
+    return res.json({ authenticated: true });
+  } catch (error) {
+    return res.json({ authenticated: false });
+  }
+};

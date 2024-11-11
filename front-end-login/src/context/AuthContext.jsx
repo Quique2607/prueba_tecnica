@@ -4,12 +4,13 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const checkAuthStatus = async () => {
     try {
-      const res = await fetch("http://localhost:3000/verifyToken", {
+      const res = await fetch("http://localhost:3000/api/auth/check-auth", {
         method: "GET",
-        credentials: true,
+        credentials: "include",
       });
 
       const data = await res.json();
@@ -34,7 +35,7 @@ export const AuthProvider = ({ children }) => {
     try {
       await fetch("http://localhost:3000/api/auth/logout", {
         method: "POST",
-        credentials: true,
+        credentials: "include",
       });
       setIsAuthenticated(false);
     } catch (error) {
@@ -55,3 +56,5 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+
+export const useAuth = () => useContext(AuthContext);
