@@ -1,7 +1,7 @@
 import { UserOutlined, UnlockOutlined } from "@ant-design/icons";
 import { Input, Checkbox, Button } from "antd";
 import SocialMedia from "./components/SocialMedia";
-import sign_in from "/sign_in.svg";
+import login from "/login.png";
 import { Controller, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import {useNavigate} from "react-router";
@@ -17,37 +17,38 @@ const SignIn = () => {
 
   const onSubmit = async (data) => {
     try {
-      const res = await fetch("http://localhost:3000/api/login", {
+      const res = await fetch("http://localhost:3000/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
+        credentials: "include",
       });
 
       const result = await res.json();
 
-      if (!res.ok) {
-        alert(result.error);
-      } else {
-        alert(result.message);
+      if(res.ok && result.success){
         setTimeout(()=>{
             navigate("/")
         },1000)
+      }else{
+        alert(result.error || "Error al iniciar sesión");
       }
     } catch (error) {
       console.log("Fallo en el servidor", error.message);
+      alert("Hubo un problema al iniciar sesión");
     }
   };
 
   console.log(errors);
   return (
     <>
-      <div className="h-[100vh] flex items-center">
-        <div className="grid grid-cols-1  md:grid-cols-2 items-center my-auto p-5 md:p-[60px] w-full gap-3 md:gap-10">
+      <div className="h-[100vh] flex items-center justify-center">
+        <div className="grid grid-cols-1  md:grid-cols-2 items-center my-auto p-5 md:p-[60px] gap-3 md:gap-10">
           <div className=" h-[250px] md:h-[600px] flex items-center justify-center">
             <img
-              src={sign_in}
+              src={login}
               alt="sign_in"
               className="object-contain h-full p-2"
             />
@@ -110,7 +111,7 @@ const SignIn = () => {
 
             <div className="mt-5 text-center">
               <Link to={"/signUp"}>
-                <h2>Crea tu cuenta</h2>
+                <h2 className="text-gray-500 font-bold">Crea tu cuenta</h2>
               </Link>
             </div>
           </div>

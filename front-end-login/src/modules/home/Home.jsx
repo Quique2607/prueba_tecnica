@@ -1,9 +1,18 @@
-const Home = () =>{
-    return(
-        <>
-        Bienvenido al Home
-        </>
-    )
-}
+import bienvenido from "/bienvenidos.png"
+import TableComponent from "./components/Table";
 
-export default Home
+const Home = () => {
+  return (
+    <>
+    <div className="p-10">
+      <div className="h-[100px] mb-5 flex justify-center p-2">
+        <img src={bienvenido} alt="bienvenidos" className="object-contain h-full" />
+      
+      </div>
+      <TableComponent/>
+    </div>
+    </>
+  );
+};
+
+export default Home;

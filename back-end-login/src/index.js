@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 
 import userRoutes from "./routes/usuario_routes.js";
+import authRoutes from "./routes/auth_routes.js";
 
 const app = express();
 
@@ -24,7 +25,8 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-app.use("/api", userRoutes);
+app.use("/api/usuario", userRoutes);
+app.use("/api/auth", authRoutes);
 
 app.listen(3000);
 console.log("server on port", 3000);
